@@ -10,13 +10,6 @@ class DataTransformation:
         self.config = config
 
 
-    def data_analysis(self):
-        data = pd.read_csv(self.config.data_path)
-
-        # rename target column
-        data.rename(columns={'Diabetes_binary': 'diabet'}, inplace=True)
-
-
     def train_test_spliting(self):
         data = pd.read_csv(self.config.data_path)
 

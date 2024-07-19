@@ -23,5 +23,6 @@ COLUMNS:
 
 
 TARGET_COLUMN:
-  name: diabet
+  name: Diabetes_binary
+
   
