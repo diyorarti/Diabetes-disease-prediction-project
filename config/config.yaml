@@ -6,3 +6,10 @@ data_ingestion:
   source_URL: https://github.com/diyorarti/datasets/raw/main/diabet_dataset.zip
   local_data_file: artifacts/data_ingestion/data.zip
   unzip_dir: artifacts/data_ingestion
+
+
+data_validation:
+  root_dir: artifacts/data_validation
+  unzip_data_dir: artifacts/data_ingestion/diabetes_binary_5050split_health_indicators_BRFSS2015.csv
+  STATUS_FILE: artifacts/data_validation/status.txt
+  
