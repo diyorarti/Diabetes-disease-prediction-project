@@ -1,7 +1,7 @@
 # Diabetes Prediction Project
 
 ## Project Overview
-This project aims to predict diabetes status using health indicators from a dataset. It implements a complete ML pipeline with components for data ingestion, validation, transformation, training, evaluation, and deployment using Flask for a web interface.
+This project aims to predict diabetes status using health indicators from a dataset. It implements a complete ML pipeline with components for data ingestion, validation, transformation, training, evaluation, and deployment using Flask for a web interface. Additionally, the project is integrated with a CI/CD pipeline and deployed on AWS using Docker.
 
 ## Key Components
 
@@ -56,27 +56,50 @@ Contains Jupyter notebooks for experimentation and analysis:
 - `experiment.ipynb`
 - `trials.ipynb`
 
-## Project Structure
+## Docker Setup
 
-- `.github/workflows/cicd.yaml`: GitHub Actions configuration for CI/CD.
-- `artifacts/`: Folder containing data ingestion, transformation, and model-related files.
-- `config/`: Contains the YAML configuration files (`config.yaml`, `params.yaml`, `schema.yaml`).
-- `src/ML/`: Main source code containing the components and pipeline.
-- `static/`: Contains static assets like CSS, JavaScript, and images.
-- `templates/`: Contains HTML templates for the web interface.
-- `app.py`: Flask application file.
-- `main.py`: Script to execute the entire training pipeline.
-- `requirements.txt`: Python dependencies.
+The project uses Docker to containerize the application for consistent deployments and easier distribution.
 
-## Installation
+- **Dockerfile**: Defines the environment and dependencies for running the application.
+  
+  The `Dockerfile` builds an image with the required dependencies, including Python, the required libraries, and the web application. It uses the `requirements.txt` to install dependencies and sets up the application to run on port `8080`.
 
-### Prerequisites
-- Python 3.8+
-- Docker (if you want to use Docker)
-- AWS CLI and AWS account (for cloud-based deployments)
+  ### Building and Running Docker Container
+  ```bash
+  # Build the Docker image
+  docker build -t diabetes-prediction .
 
-### Setup
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/diabetes-prediction.git
-   cd diabetes-prediction
+  # Run the Docker container
+  docker run -p 8080:8080 diabetes-prediction
+
+
+**Note**: Make sure Docker is installed and running on your local machine
+
+## CI/CD Deployment
+The project includes a CI/CD pipeline using GitHub Actions to automate testing, building, and deployment processes on AWS.
+
+- Continuous Integration: The CI/CD pipeline checks for code linting and runs unit tests whenever code is pushed to the repository's main branch.
+- Continuous Delivery: The pipeline builds a Docker image and pushes it to Amazon ECR (Elastic Container Registry).
+- Continuous Deployment: The pipeline deploys the Docker container on an AWS EC2 instance using a self-hosted runner or an ECS service.
+
+
+## GitHub Actions Workflow
+**CI/CD Configuration**: The .github/workflows/cicd.yaml file defines the pipeline, including stages for integration, build, push, and deployment.                                                                                   
+**AWS Integration**: The pipeline is configured to authenticate with AWS using secrets (AWS_ACCESS_KEY_ID and       
+**AWS_SECRET_ACCESS_KEY)** and deploys the container using Amazon ECR and ECS or an EC2 instance with Docker.
+
+## AWS Deployment
+- Amazon ECR: Used to store Docker images for deployment.
+- Amazon ECS/EC2: Used to deploy the Docker containers to the cloud.
+
+## Prerequisites
+- AWS account with configured IAM roles and permissions.
+- GitHub repository with required secrets set up (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, - ECR_REPOSITORY_NAME).
+- Docker and AWS CLI installed locally.
+
+
+## CI/CD Workflow
+- Continuous Integration: Lints the code and runs unit tests on each push to the main branch.
+- Build and Push Docker Image: Builds the Docker image and pushes it to Amazon ECR.
+- Deploy Docker Container: Pulls the latest Docker image from ECR and deploys it on an EC2 instance or ECS service.
+
