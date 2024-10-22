@@ -1,121 +1,82 @@
-# End-to-end-ML-Project
+# Diabetes Prediction Project
 
+## Project Overview
+This project aims to predict diabetes status using health indicators from a dataset. It implements a complete ML pipeline with components for data ingestion, validation, transformation, training, evaluation, and deployment using Flask for a web interface.
 
-## Workflows
+## Key Components
 
-1. update config.yaml
-2. update schema.yaml
-3. update params.yaml
-4. update the entity 
-5. update the configuration manager in src config
-6. update the components
-7. update the pipeline
-8. update the main.py
-9. update the app.py
+### Data Ingestion
+**Purpose**: Downloads the dataset from the given source and extracts necessary files for further processing.  
+**Files**:
+- `data_ingestion.py`: Handles downloading and extracting the dataset.  
+- `dvc.yaml`: Contains the data pipeline configuration.  
+**Output**: Data is stored in the `artifacts/data_ingestion/` folder.
 
-# How to run?
-### STEPS:
+### Data Validation
+**Purpose**: Validates that the dataset contains the required columns and follows the defined schema.  
+**Files**:
+- `data_validation.py`: Checks if all required columns are present in the dataset.  
+**Output**: Validation status is saved in `artifacts/data_validation/status.txt`.
 
+### Data Transformation
+**Purpose**: Splits the dataset into training and testing datasets.  
+**Files**:
+- `data_transformation.py`: Splits the dataset into training and testing sets.  
+**Output**: Transformed data is saved in `artifacts/data_transformation/`.
 
-```bash
-conda create -n mlproj python=3.8 -y 
-```
+### Model Training
+**Purpose**: Trains an ElasticNet regression model on the transformed dataset.  
+**Files**:
+- `model_trainer.py`: Handles training and saving the model.  
+**Output**: The trained model is saved as `model.joblib` in `artifacts/model_trainer/`.
 
-```bash
-conda activate mlproj
-```
+### Model Evaluation
+**Purpose**: Evaluates the trained model using test data.  
+**Files**:
+- `model_evaluation.py`: Loads the model and computes evaluation metrics such as RMSE, MAE, and R-squared.  
+**Output**: Evaluation metrics are saved in `artifacts/model_evaluation/metrics.json`.
 
+### Prediction Pipeline
+**Purpose**: Processes input data and returns predictions for diabetes risk.  
+**Files**:
+- `prediction.py`: Loads the trained model and makes predictions.
 
-```bash
-pip install -r requirements.txt
-```
+### API Deployment
+**Purpose**: Deploys the trained model as a REST API for predictions.  
+**Files**:
+- `app.py`: Contains Flask routes for training and prediction.  
 
-```bash
-python app.py
-```
+### Notebooks
+Contains Jupyter notebooks for experimentation and analysis:
+- `01_data_ingestion.ipynb`
+- `02_data_validation.ipynb`
+- `03_data_transformation.ipynb`
+- `04_model_trainer.ipynb`
+- `05_model_evaluation.ipynb`
+- `experiment.ipynb`
+- `trials.ipynb`
 
-```bash
-Now open up your local host 0.0.0.0:8080
-```
+## Project Structure
 
+- `.github/workflows/cicd.yaml`: GitHub Actions configuration for CI/CD.
+- `artifacts/`: Folder containing data ingestion, transformation, and model-related files.
+- `config/`: Contains the YAML configuration files (`config.yaml`, `params.yaml`, `schema.yaml`).
+- `src/ML/`: Main source code containing the components and pipeline.
+- `static/`: Contains static assets like CSS, JavaScript, and images.
+- `templates/`: Contains HTML templates for the web interface.
+- `app.py`: Flask application file.
+- `main.py`: Script to execute the entire training pipeline.
+- `requirements.txt`: Python dependencies.
 
+## Installation
 
-# AWS-CICD-Deployment-with-Github-Actions
+### Prerequisites
+- Python 3.8+
+- Docker (if you want to use Docker)
+- AWS CLI and AWS account (for cloud-based deployments)
 
-## 1. Login to AWS console.
-
-## 2. Create IAM user for deployment
-
-	#with specific access
-
-	1. EC2 access : It is virtual machine
-
-	2. ECR: Elastic Container registry to save your docker image in aws
-
-
-	#Description: About the deployment
-
-	1. Build docker image of the source code
-
-	2. Push your docker image to ECR
-
-	3. Launch Your EC2 
-
-	4. Pull Your image from ECR in EC2
-
-	5. Lauch your docker image in EC2
-
-	#Policy:
-
-	1. AmazonEC2ContainerRegistryFullAccess
-
-	2. AmazonEC2FullAccess
-
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 136566696263.dkr.ecr.us-east-1.amazonaws.com/mlproject
-
-	
-## 4. Create EC2 machine (Ubuntu) 
-
-## 5. Open EC2 and Install docker in EC2 Machine:
-	
-	
-	#optinal
-
-	sudo apt-get update -y
-
-	sudo apt-get upgrade
-	
-	#required
-
-	curl -fsSL https://get.docker.com -o get-docker.sh
-
-	sudo sh get-docker.sh
-
-	sudo usermod -aG docker ubuntu
-
-	newgrp docker
-	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
-
-# 7. Setup github secrets:
-
-    AWS_ACCESS_KEY_ID=
-
-    AWS_SECRET_ACCESS_KEY=
-
-    AWS_REGION = us-east-1
-
-    AWS_ECR_LOGIN_URI = demo>>  566373416292.dkr.ecr.ap-south-1.amazonaws.com
-
-    ECR_REPOSITORY_NAME = simple-app
-
-
-
-
-
-
- git config --global user.name "diyorarti"
+### Setup
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/diabetes-prediction.git
+   cd diabetes-prediction
